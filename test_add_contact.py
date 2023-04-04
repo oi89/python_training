@@ -14,18 +14,29 @@ class TestAddContact(unittest.TestCase):
     
     def test_add_contact(self):
         wd = self.wd
-        # open home page
+        self.open_home_page(wd)
+        self.login(wd, username="admin", password="secret")
+        self.click_add_new_menu(wd)
+        self.add_new_contact(wd)
+        self.return_to_home_page(wd)
+        self.logout(wd)
+
+    def open_home_page(self, wd):
         wd.get("http://localhost/addressbook/")
-        # login
+
+    def login(self, wd, username, password):
         wd.find_element(By.NAME, "user").click()
         wd.find_element(By.NAME, "user").clear()
-        wd.find_element(By.NAME, "user").send_keys("admin")
+        wd.find_element(By.NAME, "user").send_keys(username)
         wd.find_element(By.NAME, "pass").click()
         wd.find_element(By.NAME, "pass").clear()
-        wd.find_element(By.NAME, "pass").send_keys("secret")
+        wd.find_element(By.NAME, "pass").send_keys(password)
         wd.find_element(By.XPATH, "//input[@value='Login']").click()
-        # click add new menu
+
+    def click_add_new_menu(self, wd):
         wd.find_element(By.LINK_TEXT, "add new").click()
+
+    def add_new_contact(self, wd):
         # fill new contact form
         wd.find_element(By.NAME, "firstname").click()
         wd.find_element(By.NAME, "firstname").clear()
@@ -97,11 +108,13 @@ class TestAddContact(unittest.TestCase):
         wd.find_element(By.NAME, "notes").send_keys("Note1")
         # submit
         wd.find_element(By.XPATH, "//input[@name='submit'][2]").click()
-        # return to home page
+
+    def return_to_home_page(self, wd):
         wd.find_element(By.LINK_TEXT, "home page").click()
-        # logout
+
+    def logout(self, wd):
         wd.find_element(By.LINK_TEXT, "Logout").click()
-    
+
     def is_element_present(self, how, what):
         try: self.wd.find_element(by=how, value=what)
         except NoSuchElementException as e: return False

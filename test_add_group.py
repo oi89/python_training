@@ -21,6 +21,15 @@ class TestAddGroup(unittest.TestCase):
         self.return_to_groups_page(wd)
         self.logout(wd)
 
+    def test_empty_group(self):
+        wd = self.wd
+        self.open_home_page(wd)
+        self.login(wd, username="admin", password="secret")
+        self.open_groups_menu(wd)
+        self.add_new_group(wd, name="", header="", footer="")
+        self.return_to_groups_page(wd)
+        self.logout(wd)
+
     def open_home_page(self, wd):
         wd.get("http://localhost/addressbook/")
 

@@ -14,7 +14,9 @@ class TestAddContact(unittest.TestCase):
     
     def test_add_contact(self):
         wd = self.wd
-        wd.get("http://localhost/addressbook/index.php")
+        # open home page
+        wd.get("http://localhost/addressbook/")
+        # login
         wd.find_element(By.NAME, "user").click()
         wd.find_element(By.NAME, "user").clear()
         wd.find_element(By.NAME, "user").send_keys("admin")
@@ -22,8 +24,9 @@ class TestAddContact(unittest.TestCase):
         wd.find_element(By.NAME, "pass").clear()
         wd.find_element(By.NAME, "pass").send_keys("secret")
         wd.find_element(By.XPATH, "//input[@value='Login']").click()
-        wd.find_element(By.ID, "header").click()
+        # click add new menu
         wd.find_element(By.LINK_TEXT, "add new").click()
+        # fill new contact form
         wd.find_element(By.NAME, "firstname").click()
         wd.find_element(By.NAME, "firstname").clear()
         wd.find_element(By.NAME, "firstname").send_keys("name1")
@@ -70,24 +73,19 @@ class TestAddContact(unittest.TestCase):
         wd.find_element(By.NAME, "homepage").clear()
         wd.find_element(By.NAME, "homepage").send_keys("a.ru")
         wd.find_element(By.NAME, "bday").click()
-        Select(wd.find_element(By.NAME, "bday")).select_by_visible_text("1")
         wd.find_element(By.XPATH, "//option[@value='1']").click()
         wd.find_element(By.NAME, "bmonth").click()
-        Select(wd.find_element(By.NAME, "bmonth")).select_by_visible_text("January")
         wd.find_element(By.XPATH, "//option[@value='January']").click()
         wd.find_element(By.NAME, "byear").click()
         wd.find_element(By.NAME, "byear").clear()
         wd.find_element(By.NAME, "byear").send_keys("1980")
         wd.find_element(By.NAME, "aday").click()
-        Select(wd.find_element(By.NAME, "aday")).select_by_visible_text("2")
-        wd.find_element(By.XPATH, "//div[@id='content']/form/select[3]/option[4]").click()
+        wd.find_element(By.XPATH, "//select[@name='aday']/option[@value='2']").click()
         wd.find_element(By.NAME, "amonth").click()
-        Select(wd.find_element(By.NAME, "amonth")).select_by_visible_text("February")
-        wd.find_element(By.XPATH, "//div[@id='content']/form/select[4]/option[3]").click()
+        wd.find_element(By.XPATH, "//select[@name='amonth']/option[@value='February']").click()
         wd.find_element(By.NAME, "ayear").click()
         wd.find_element(By.NAME, "ayear").clear()
         wd.find_element(By.NAME, "ayear").send_keys("2000")
-        wd.find_element(By.NAME, "theform").click()
         wd.find_element(By.NAME, "address2").click()
         wd.find_element(By.NAME, "address2").clear()
         wd.find_element(By.NAME, "address2").send_keys("Address2")
@@ -97,9 +95,11 @@ class TestAddContact(unittest.TestCase):
         wd.find_element(By.NAME, "notes").click()
         wd.find_element(By.NAME, "notes").clear()
         wd.find_element(By.NAME, "notes").send_keys("Note1")
-        wd.find_element(By.ID, "content").click()
-        wd.find_element(By.XPATH, "//div[@id='content']/form/input[21]").click()
+        # submit
+        wd.find_element(By.XPATH, "//input[@name='submit'][2]").click()
+        # return to home page
         wd.find_element(By.LINK_TEXT, "home page").click()
+        # logout
         wd.find_element(By.LINK_TEXT, "Logout").click()
     
     def is_element_present(self, how, what):

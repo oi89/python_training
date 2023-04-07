@@ -14,22 +14,22 @@ class TestAddGroup(unittest.TestCase):
         self.wd.implicitly_wait(30)
 
     def test_add_group(self):
-        wd = self.wd
-        self.login(wd, username="admin", password="secret")
-        self.add_new_group(wd, Group(name="group1", header="text1", footer="text2"))
-        self.logout(wd)
+        self.login(username="admin", password="secret")
+        self.add_new_group(Group(name="group1", header="text1", footer="text2"))
+        self.logout()
 
     def test_empty_group(self):
-        wd = self.wd
-        self.login(wd, username="admin", password="secret")
-        self.add_new_group(wd, Group(name="", header="", footer=""))
-        self.logout(wd)
+        self.login(username="admin", password="secret")
+        self.add_new_group(Group(name="", header="", footer=""))
+        self.logout()
 
-    def open_home_page(self, wd):
+    def open_home_page(self):
+        wd = self.wd
         wd.get("http://localhost/addressbook/")
 
-    def login(self, wd, username, password):
-        self.open_home_page(wd)
+    def login(self, username, password):
+        wd = self.wd
+        self.open_home_page()
 
         wd.find_element(By.NAME, "user").click()
         wd.find_element(By.NAME, "user").clear()
@@ -39,11 +39,13 @@ class TestAddGroup(unittest.TestCase):
         wd.find_element(By.NAME, "pass").send_keys(password)
         wd.find_element(By.XPATH, "//input[@value='Login']").click()
 
-    def open_groups_menu(self, wd):
+    def open_groups_menu(self):
+        wd = self.wd
         wd.find_element(By.LINK_TEXT, "groups").click()
 
-    def add_new_group(self, wd, group):
-        self.open_groups_menu(wd)
+    def add_new_group(self, group):
+        wd = self.wd
+        self.open_groups_menu()
 
         # click new group button
         wd.find_element(By.NAME, "new").click()
@@ -60,12 +62,14 @@ class TestAddGroup(unittest.TestCase):
         # submit form
         wd.find_element(By.NAME, "submit").click()
 
-        self.return_to_groups_page(wd)
+        self.return_to_groups_page()
 
-    def return_to_groups_page(self, wd):
+    def return_to_groups_page(self):
+        wd = self.wd
         wd.find_element(By.LINK_TEXT, "group page").click()
 
-    def logout(self, wd):
+    def logout(self):
+        wd = self.wd
         wd.find_element(By.LINK_TEXT, "Logout").click()
 
     def is_element_present(self, how, what):

@@ -40,18 +40,17 @@ class TestAddContact(unittest.TestCase):
             phone2='phone2',
             notes='notes1'
         )
-        wd = self.wd
-        self.open_home_page(wd)
-        self.login(wd, username="admin", password="secret")
-        self.click_add_new_menu(wd)
-        self.add_new_contact(wd, contact)
-        self.return_to_home_page(wd)
-        self.logout(wd)
+        self.login(username="admin", password="secret")
+        self.add_new_contact(contact)
+        self.logout()
 
-    def open_home_page(self, wd):
+    def open_home_page(self):
+        wd = self.wd
         wd.get("http://localhost/addressbook/")
 
-    def login(self, wd, username, password):
+    def login(self, username, password):
+        wd = self.wd
+        self.open_home_page()
         wd.find_element(By.NAME, "user").click()
         wd.find_element(By.NAME, "user").clear()
         wd.find_element(By.NAME, "user").send_keys(username)
@@ -60,10 +59,16 @@ class TestAddContact(unittest.TestCase):
         wd.find_element(By.NAME, "pass").send_keys(password)
         wd.find_element(By.XPATH, "//input[@value='Login']").click()
 
-    def click_add_new_menu(self, wd):
+    def click_add_new_menu(self):
+        wd = self.wd
         wd.find_element(By.LINK_TEXT, "add new").click()
 
-    def add_new_contact(self, wd, contact):
+    def add_new_contact(self, contact):
+        wd = self.wd
+
+        # click "add new"
+        self.click_add_new_menu()
+
         # fill new contact form
         wd.find_element(By.NAME, "firstname").click()
         wd.find_element(By.NAME, "firstname").clear()
@@ -133,13 +138,19 @@ class TestAddContact(unittest.TestCase):
         wd.find_element(By.NAME, "notes").click()
         wd.find_element(By.NAME, "notes").clear()
         wd.find_element(By.NAME, "notes").send_keys(contact.notes)
+
         # submit
         wd.find_element(By.XPATH, "//input[@name='submit'][2]").click()
 
-    def return_to_home_page(self, wd):
+        # return to a home page
+        self.return_to_home_page()
+
+    def return_to_home_page(self):
+        wd = self.wd
         wd.find_element(By.LINK_TEXT, "home page").click()
 
-    def logout(self, wd):
+    def logout(self):
+        wd = self.wd
         wd.find_element(By.LINK_TEXT, "Logout").click()
 
     def is_element_present(self, how, what):

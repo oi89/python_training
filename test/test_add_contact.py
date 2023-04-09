@@ -4,11 +4,13 @@ import pytest
 from model.contact import Contact
 from fixture.application import Application
 
+
 @pytest.fixture()
 def app(request):
     fixture = Application()
     request.addfinalizer(fixture.destroy)
     return fixture
+
 
 def test_add_contact(app):
     contact = Contact(
@@ -37,6 +39,6 @@ def test_add_contact(app):
         phone2='phone2',
         notes='notes1'
     )
-    app.login(username="admin", password="secret")
-    app.add_new_contact(contact)
-    app.logout()
+    app.session.login(username="admin", password="secret")
+    app.contact.create(contact)
+    app.session.logout()

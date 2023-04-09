@@ -19,5 +19,6 @@ class SessionHelper:
 
     def logout(self):
         wd = self.app.wd
-        wd.find_element(By.LINK_TEXT, "Logout").click()
         wd.find_element(By.XPATH, "//form[@name='logout']//a").click()
+        # wait for appearance of login form
+        wd.find_element(By.NAME, "user")

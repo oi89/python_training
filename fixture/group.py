@@ -34,3 +34,12 @@ class GroupHelper:
     def return_to_groups_page(self):
         wd = self.app.wd
         wd.find_element(By.LINK_TEXT, "group page").click()
+
+    def delete_first(self):
+        wd = self.app.wd
+        self.open_groups_menu()
+        # select first group's checkbox
+        wd.find_element(By.XPATH, "(//input[@name='selected[]'])[1]").click()
+        # press delete button
+        wd.find_element(By.XPATH, "//input[@name='delete']").click()
+        self.return_to_groups_page()

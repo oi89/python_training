@@ -1,4 +1,5 @@
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.alert import Alert
 
 
 class ContactHelper:
@@ -95,3 +96,12 @@ class ContactHelper:
 
         # return to a home page
         self.return_to_home_page()
+
+    def delete_first(self):
+        wd = self.app.wd
+        # select first contact's checkbox
+        wd.find_element(By.XPATH, "(//input[@name='selected[]'])[1]").click()
+        # press delete button
+        wd.find_element(By.XPATH, "//input[@value='Delete']").click()
+        # press OK in alert window
+        wd.switch_to.alert.accept()

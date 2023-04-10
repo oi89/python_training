@@ -15,12 +15,8 @@ class ContactHelper:
         wd = self.app.wd
         wd.find_element(By.LINK_TEXT, "home page").click()
 
-    def create(self, contact):
+    def fill_contact_form(self, contact):
         wd = self.app.wd
-
-        # click "add new"
-        self.click_add_new_menu()
-
         # fill new contact form
         wd.find_element(By.NAME, "firstname").click()
         wd.find_element(By.NAME, "firstname").clear()
@@ -91,10 +87,13 @@ class ContactHelper:
         wd.find_element(By.NAME, "notes").clear()
         wd.find_element(By.NAME, "notes").send_keys(contact.notes)
 
+    def create(self, contact):
+        wd = self.app.wd
+
+        self.click_add_new_menu()
+        self.fill_contact_form(contact)
         # submit
         wd.find_element(By.XPATH, "//input[@name='submit'][2]").click()
-
-        # return to a home page
         self.return_to_home_page()
 
     def delete_first(self):
@@ -105,3 +104,14 @@ class ContactHelper:
         wd.find_element(By.XPATH, "//input[@value='Delete']").click()
         # press OK in alert window
         wd.switch_to.alert.accept()
+
+    def edit_first(self, contact):
+        wd = self.app.wd
+        # select first contact's checkbox
+        wd.find_element(By.XPATH, "(//input[@name='selected[]'])[1]").click()
+        # press edit button in first row
+        wd.find_element(By.XPATH, "(//tr[@name='entry'])[1]//img[@title='Edit']").click()
+        self.fill_contact_form(contact)
+        # press update button
+        wd.find_element(By.XPATH, "//input[@value='Update']").click()
+        self.return_to_home_page()

@@ -7,6 +7,10 @@ class ContactHelper:
     def __init__(self, app):
         self.app = app
 
+    def click_home_menu(self):
+        wd = self.app.wd
+        wd.find_element(By.LINK_TEXT, "home").click()
+
     def click_add_new_menu(self):
         wd = self.app.wd
         wd.find_element(By.LINK_TEXT, "add new").click()
@@ -98,6 +102,7 @@ class ContactHelper:
 
     def delete_first(self):
         wd = self.app.wd
+        self.click_home_menu()
         # select first contact's checkbox
         wd.find_element(By.XPATH, "(//input[@name='selected[]'])[1]").click()
         # press delete button
@@ -107,6 +112,7 @@ class ContactHelper:
 
     def edit_first(self, contact):
         wd = self.app.wd
+        self.click_home_menu()
         # select first contact's checkbox
         wd.find_element(By.XPATH, "(//input[@name='selected[]'])[1]").click()
         # press edit button in first row

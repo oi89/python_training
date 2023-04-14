@@ -59,3 +59,8 @@ class GroupHelper:
         wd = self.app.wd
         # select first group's checkbox
         wd.find_element(By.XPATH, "(//input[@name='selected[]'])[1]").click()
+
+    def count(self):
+        wd = self.app.wd
+        self.open_groups_menu()
+        return len(wd.find_elements(By.XPATH, "//input[@name='selected[]']"))

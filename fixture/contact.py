@@ -91,3 +91,8 @@ class ContactHelper:
         wd = self.app.wd
         # select first contact's checkbox
         wd.find_element(By.XPATH, "(//input[@name='selected[]'])[1]").click()
+
+    def count(self):
+        wd = self.app.wd
+        self.click_home_menu()
+        return len(wd.find_elements(By.XPATH, "//input[@name='selected[]']"))

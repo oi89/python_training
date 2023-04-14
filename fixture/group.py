@@ -12,16 +12,16 @@ class GroupHelper:
 
     def fill_group_form(self, group):
         wd = self.app.wd
-        # fill new group form
-        wd.find_element(By.NAME, "group_name").click()
-        wd.find_element(By.NAME, "group_name").clear()
-        wd.find_element(By.NAME, "group_name").send_keys(group.name)
-        wd.find_element(By.NAME, "group_header").click()
-        wd.find_element(By.NAME, "group_header").clear()
-        wd.find_element(By.NAME, "group_header").send_keys(group.header)
-        wd.find_element(By.NAME, "group_footer").click()
-        wd.find_element(By.NAME, "group_footer").clear()
-        wd.find_element(By.NAME, "group_footer").send_keys(group.footer)
+        self.change_field_value("group_name", group.name)
+        self.change_field_value("group_header", group.header)
+        self.change_field_value("group_footer", group.footer)
+
+    def change_field_value(self, element_name, text):
+        wd = self.app.wd
+        if text is not None:
+            wd.find_element(By.NAME, element_name).click()
+            wd.find_element(By.NAME, element_name).clear()
+            wd.find_element(By.NAME, element_name).send_keys(text)
 
     def create(self, group):
         wd = self.app.wd
@@ -40,8 +40,7 @@ class GroupHelper:
     def delete_first(self):
         wd = self.app.wd
         self.open_groups_menu()
-        # select first group's checkbox
-        wd.find_element(By.XPATH, "(//input[@name='selected[]'])[1]").click()
+        self.select_first_group()
         # press delete button
         wd.find_element(By.XPATH, "//input[@name='delete']").click()
         self.return_to_groups_page()
@@ -49,11 +48,15 @@ class GroupHelper:
     def edit_first(self, group):
         wd = self.app.wd
         self.open_groups_menu()
-        # select first group's checkbox
-        wd.find_element(By.XPATH, "(//input[@name='selected[]'])[1]").click()
+        self.select_first_group()
         # press edit button
         wd.find_element(By.XPATH, "//input[@name='edit']").click()
         self.fill_group_form(group)
         # press update button
         wd.find_element(By.XPATH, "//input[@name='update']").click()
         self.return_to_groups_page()
+
+    def select_first_group(self):
+        wd = self.app.wd
+        # select first group's checkbox
+        wd.find_element(By.XPATH, "(//input[@name='selected[]'])[1]").click()

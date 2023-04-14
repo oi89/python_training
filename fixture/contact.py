@@ -19,77 +19,44 @@ class ContactHelper:
         wd = self.app.wd
         wd.find_element(By.LINK_TEXT, "home page").click()
 
-    def fill_contact_form(self, contact):
+    def change_field_value(self, element_name, text):
         wd = self.app.wd
-        # fill new contact form
-        wd.find_element(By.NAME, "firstname").click()
-        wd.find_element(By.NAME, "firstname").clear()
-        wd.find_element(By.NAME, "firstname").send_keys(contact.firstname)
-        wd.find_element(By.NAME, "middlename").click()
-        wd.find_element(By.NAME, "middlename").clear()
-        wd.find_element(By.NAME, "middlename").send_keys(contact.middlename)
-        wd.find_element(By.NAME, "lastname").click()
-        wd.find_element(By.NAME, "lastname").clear()
-        wd.find_element(By.NAME, "lastname").send_keys(contact.lastname)
-        wd.find_element(By.NAME, "nickname").click()
-        wd.find_element(By.NAME, "nickname").clear()
-        wd.find_element(By.NAME, "nickname").send_keys(contact.nickname)
-        wd.find_element(By.NAME, "title").click()
-        wd.find_element(By.NAME, "title").clear()
-        wd.find_element(By.NAME, "title").send_keys(contact.title)
-        wd.find_element(By.NAME, "company").click()
-        wd.find_element(By.NAME, "company").clear()
-        wd.find_element(By.NAME, "company").send_keys(contact.company)
-        wd.find_element(By.NAME, "address").click()
-        wd.find_element(By.NAME, "address").clear()
-        wd.find_element(By.NAME, "address").send_keys(contact.address)
-        wd.find_element(By.NAME, "home").click()
-        wd.find_element(By.NAME, "home").clear()
-        wd.find_element(By.NAME, "home").send_keys(contact.home)
-        wd.find_element(By.NAME, "mobile").click()
-        wd.find_element(By.NAME, "mobile").clear()
-        wd.find_element(By.NAME, "mobile").send_keys(contact.mobile)
-        wd.find_element(By.NAME, "work").click()
-        wd.find_element(By.NAME, "work").clear()
-        wd.find_element(By.NAME, "work").send_keys(contact.work)
-        wd.find_element(By.NAME, "fax").click()
-        wd.find_element(By.NAME, "fax").clear()
-        wd.find_element(By.NAME, "fax").send_keys(contact.fax)
-        wd.find_element(By.NAME, "email").click()
-        wd.find_element(By.NAME, "email").clear()
-        wd.find_element(By.NAME, "email").send_keys(contact.email)
-        wd.find_element(By.NAME, "email2").click()
-        wd.find_element(By.NAME, "email2").clear()
-        wd.find_element(By.NAME, "email2").send_keys(contact.email2)
-        wd.find_element(By.NAME, "email3").click()
-        wd.find_element(By.NAME, "email3").clear()
-        wd.find_element(By.NAME, "email3").send_keys(contact.email3)
-        wd.find_element(By.NAME, "homepage").click()
-        wd.find_element(By.NAME, "homepage").clear()
-        wd.find_element(By.NAME, "homepage").send_keys(contact.homepage)
-        wd.find_element(By.NAME, "bday").click()
-        wd.find_element(By.XPATH, "//option[@value='%s']" % contact.bday).click()
-        wd.find_element(By.NAME, "bmonth").click()
-        wd.find_element(By.XPATH, "//option[@value='%s']" % contact.bmonth).click()
-        wd.find_element(By.NAME, "byear").click()
-        wd.find_element(By.NAME, "byear").clear()
-        wd.find_element(By.NAME, "byear").send_keys(contact.byear)
-        wd.find_element(By.NAME, "aday").click()
-        wd.find_element(By.XPATH, "//select[@name='aday']/option[@value='%s']" % contact.aday).click()
-        wd.find_element(By.NAME, "amonth").click()
-        wd.find_element(By.XPATH, "//select[@name='amonth']/option[@value='%s']" % contact.amonth).click()
-        wd.find_element(By.NAME, "ayear").click()
-        wd.find_element(By.NAME, "ayear").clear()
-        wd.find_element(By.NAME, "ayear").send_keys(contact.ayear)
-        wd.find_element(By.NAME, "address2").click()
-        wd.find_element(By.NAME, "address2").clear()
-        wd.find_element(By.NAME, "address2").send_keys(contact.address2)
-        wd.find_element(By.NAME, "phone2").click()
-        wd.find_element(By.NAME, "phone2").clear()
-        wd.find_element(By.NAME, "phone2").send_keys(contact.phone2)
-        wd.find_element(By.NAME, "notes").click()
-        wd.find_element(By.NAME, "notes").clear()
-        wd.find_element(By.NAME, "notes").send_keys(contact.notes)
+        if text is not None:
+            wd.find_element(By.NAME, element_name).click()
+            wd.find_element(By.NAME, element_name).clear()
+            wd.find_element(By.NAME, element_name).send_keys(text)
+
+    def select_field_value(self, element_name, value):
+        wd = self.app.wd
+        if value is not None:
+            wd.find_element(By.NAME, element_name).click()
+            wd.find_element(By.XPATH, f"//select[@name='{element_name}']/option[@value='{value}']").click()
+
+    def fill_contact_form(self, contact):
+        self.change_field_value("firstname", contact.firstname)
+        self.change_field_value("middlename", contact.middlename)
+        self.change_field_value("lastname", contact.lastname)
+        self.change_field_value("nickname", contact.nickname)
+        self.change_field_value("title", contact.title)
+        self.change_field_value("company", contact.company)
+        self.change_field_value("address", contact.address)
+        self.change_field_value("home", contact.home)
+        self.change_field_value("mobile", contact.mobile)
+        self.change_field_value("work", contact.work)
+        self.change_field_value("fax", contact.fax)
+        self.change_field_value("email", contact.email)
+        self.change_field_value("email2", contact.email2)
+        self.change_field_value("email3", contact.email3)
+        self.change_field_value("homepage", contact.homepage)
+        self.select_field_value("bday", contact.bday)
+        self.select_field_value("bmonth", contact.bmonth)
+        self.change_field_value("byear", contact.byear)
+        self.select_field_value("aday", contact.aday)
+        self.select_field_value("amonth", contact.amonth)
+        self.change_field_value("ayear", contact.ayear)
+        self.change_field_value("address2", contact.address2)
+        self.change_field_value("phone2", contact.phone2)
+        self.change_field_value("notes", contact.notes)
 
     def create(self, contact):
         wd = self.app.wd
@@ -103,8 +70,7 @@ class ContactHelper:
     def delete_first(self):
         wd = self.app.wd
         self.click_home_menu()
-        # select first contact's checkbox
-        wd.find_element(By.XPATH, "(//input[@name='selected[]'])[1]").click()
+        self.select_first_contact()
         # press delete button
         wd.find_element(By.XPATH, "//input[@value='Delete']").click()
         # press OK in alert window
@@ -113,11 +79,15 @@ class ContactHelper:
     def edit_first(self, contact):
         wd = self.app.wd
         self.click_home_menu()
-        # select first contact's checkbox
-        wd.find_element(By.XPATH, "(//input[@name='selected[]'])[1]").click()
+        self.select_first_contact()
         # press edit button in first row
         wd.find_element(By.XPATH, "(//tr[@name='entry'])[1]//img[@title='Edit']").click()
         self.fill_contact_form(contact)
         # press update button
         wd.find_element(By.XPATH, "//input[@value='Update']").click()
         self.return_to_home_page()
+
+    def select_first_contact(self):
+        wd = self.app.wd
+        # select first contact's checkbox
+        wd.find_element(By.XPATH, "(//input[@name='selected[]'])[1]").click()

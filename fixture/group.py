@@ -8,7 +8,8 @@ class GroupHelper:
 
     def open_groups_menu(self):
         wd = self.app.wd
-        wd.find_element(By.LINK_TEXT, "groups").click()
+        if not (wd.current_url.endswith("/group.php") and len(wd.find_elements(By.NAME, "new")) > 0):
+            wd.find_element(By.LINK_TEXT, "groups").click()
 
     def fill_group_form(self, group):
         self.change_field_value("group_name", group.name)

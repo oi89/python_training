@@ -9,7 +9,8 @@ class ContactHelper:
 
     def click_home_menu(self):
         wd = self.app.wd
-        wd.find_element(By.LINK_TEXT, "home").click()
+        if not(wd.current_url.endswith("/addressbook/") and len(wd.find_elements(By.NAME, "searchstring")) > 0):
+            wd.find_element(By.LINK_TEXT, "home").click()
 
     def click_add_new_menu(self):
         wd = self.app.wd

@@ -29,6 +29,4 @@ def test_add_contact(app):
         phone2='phone2',
         notes='notes1'
     )
-    app.session.login(username="admin", password="secret")
     app.contact.create(contact)
-    app.session.logout()

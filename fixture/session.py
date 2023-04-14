@@ -17,11 +17,6 @@ class SessionHelper:
         wd.find_element(By.NAME, "pass").send_keys(password)
         wd.find_element(By.XPATH, "//input[@value='Login']").click()
 
-    def is_logged_in_as(self, username):
-        wd = self.app.wd
-        # check if there are correct username in the top of the page
-        return wd.find_element(By.XPATH, "//form[@name='logout']/b").text == "(" + username + ")"
-
     def ensure_login(self, username, password):
         if self.is_logged_in():
             if self.is_logged_in_as(username):
@@ -30,6 +25,16 @@ class SessionHelper:
                 self.logout()
         self.login(username, password)
 
+    def is_logged_in(self):
+        wd = self.app.wd
+        # check if there are logout links on the page
+        return len(wd.find_elements(By.XPATH, "//form[@name='logout']//a")) > 0
+
+    def is_logged_in_as(self, username):
+        wd = self.app.wd
+        # check if there are correct username in the top of the page
+        return wd.find_element(By.XPATH, "//form[@name='logout']/b").text == "(" + username + ")"
+
     def logout(self):
         wd = self.app.wd
         wd.find_element(By.XPATH, "//form[@name='logout']//a").click()
@@ -37,11 +42,5 @@ class SessionHelper:
         wd.find_element(By.NAME, "user")
 
     def ensure_logout(self):
-        wd = self.app.wd
         if self.is_logged_in():
             self.logout()
-
-    def is_logged_in(self):
-        wd = self.app.wd
-        # check if there are logout links on the page
-        return len(wd.find_elements(By.XPATH, "//form[@name='logout']//a")) > 0

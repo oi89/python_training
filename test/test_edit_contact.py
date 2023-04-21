@@ -6,7 +6,11 @@ def test_edit_first_contact_firstname(app):
     if app.contact.count() == 0:
         app.contact.create(Contact(firstname='contact for edit'))
 
+    old_contacts = app.contact.get_contacts_list()
     app.contact.edit_first(contact)
+    new_contacts = app.contact.get_contacts_list()
+
+    assert len(new_contacts) == len(old_contacts)
 
 
 def test_edit_first_contact_birthday(app):
@@ -14,4 +18,8 @@ def test_edit_first_contact_birthday(app):
     if app.contact.count() == 0:
         app.contact.create(Contact(firstname='contact for edit'))
 
+    old_contacts = app.contact.get_contacts_list()
     app.contact.edit_first(contact)
+    new_contacts = app.contact.get_contacts_list()
+
+    assert len(new_contacts) == len(old_contacts)

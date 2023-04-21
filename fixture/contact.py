@@ -78,6 +78,10 @@ class ContactHelper:
         wd.find_element(By.XPATH, "//input[@value='Delete']").click()
         # press OK in alert window
         wd.switch_to.alert.accept()
+        self.click_home_menu()
+        # обновляем страницу, чтобы удаленные данные не присутствовали
+        wd.refresh()
+
 
     def edit_first(self, contact):
         wd = self.app.wd

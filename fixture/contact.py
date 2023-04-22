@@ -110,8 +110,8 @@ class ContactHelper:
 
         contacts = []
         for element in wd.find_elements(By.XPATH, "//tr[@name='entry']"):
-            firstname = element.find_element(By.XPATH, "//td[3]").text
-            lastname = element.find_element(By.XPATH, "//td[2]").text
+            firstname = element.find_elements(By.TAG_NAME, "td")[2].text
+            lastname = element.find_elements(By.TAG_NAME, "td")[1].text
             id = element.find_element(By.NAME, "selected[]").get_attribute("value")
             contacts.append(Contact(firstname=firstname, lastname=lastname, id=id))
 

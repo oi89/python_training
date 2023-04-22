@@ -38,10 +38,12 @@ class Contact:
         self.id = id
 
     def __repr__(self):
-        return f"{self.id}: {self.firstname}"
+        return f"{self.id}: {self.firstname} {self.lastname}"
 
     def __eq__(self, other):
-        return (self.id == other.id or self.id is None or other.id is None) and self.firstname == other.firstname
+        return (self.id == other.id or self.id is None or other.id is None) \
+            and (self.firstname == other.firstname or self.firstname is None or other.firstname is None) \
+            and (self.lastname == other.lastname or self.lastname is None or other.lastname is None)
 
     # функция для сортировки списков, возвращает либо id, либо очень большой идентификатор
     def id_or_max(self):

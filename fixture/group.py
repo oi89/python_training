@@ -43,19 +43,22 @@ class GroupHelper:
         wd = self.app.wd
         wd.find_element(By.LINK_TEXT, "group page").click()
 
-    def delete_first(self):
+    def delete_group_by_index(self, index):
         wd = self.app.wd
         self.open_groups_menu()
-        self.select_first_group()
+        self.select_group_by_index(index)
         # press delete button
         wd.find_element(By.XPATH, "//input[@name='delete']").click()
         self.return_to_groups_page()
         self.groups_cache = None
 
-    def edit_first(self, group):
+    def delete_first(self):
+        self.delete_group_by_index(0)
+
+    def edit_group_by_index(self, index, group):
         wd = self.app.wd
         self.open_groups_menu()
-        self.select_first_group()
+        self.select_group_by_index(index)
         # press edit button
         wd.find_element(By.XPATH, "//input[@name='edit']").click()
         self.fill_group_form(group)
@@ -63,6 +66,14 @@ class GroupHelper:
         wd.find_element(By.XPATH, "//input[@name='update']").click()
         self.return_to_groups_page()
         self.groups_cache = None
+
+    def edit_first(self, group):
+        self.edit_group_by_index(0, group)
+
+    def select_group_by_index(self, index):
+        wd = self.app.wd
+        # select group's checkbox by index
+        wd.find_elements(By.XPATH, "//input[@name='selected[]']")[index].click()
 
     def select_first_group(self):
         wd = self.app.wd

@@ -75,11 +75,11 @@ class ContactHelper:
         self.return_to_home_page()
         self.contacts_cache = None
 
-    def delete_first(self):
+    def delete_contact_by_index(self, index):
         wd = self.app.wd
 
         self.click_home_menu()
-        self.select_first_contact()
+        self.select_contact_by_index(index)
         # press delete button
         wd.find_element(By.XPATH, "//input[@value='Delete']").click()
         # press OK in alert window
@@ -90,22 +90,37 @@ class ContactHelper:
 
         self.contacts_cache = None
 
-    def edit_first(self, contact):
+    def delete_first(self):
+        self.delete_contact_by_index(0)
+
+    def edit_contact_by_index(self, index, contact):
         wd = self.app.wd
         self.click_home_menu()
-        self.select_first_contact()
-        # press edit button in first row
-        wd.find_element(By.XPATH, "(//tr[@name='entry'])[1]//img[@title='Edit']").click()
+        self.select_contact_by_index(index)
+        self.click_edit_button_by_index(index)
         self.fill_contact_form(contact)
         # press update button
         wd.find_element(By.XPATH, "//input[@value='Update']").click()
         self.return_to_home_page()
         self.contacts_cache = None
 
+    def edit_first(self, contact):
+        self.edit_contact_by_index(0, contact)
+
+    def select_contact_by_index(self, index):
+        wd = self.app.wd
+        # select contact's checkbox by index
+        wd.find_elements(By.XPATH, "//input[@name='selected[]']")[index].click()
+
     def select_first_contact(self):
         wd = self.app.wd
         # select first contact's checkbox
         wd.find_element(By.XPATH, "(//input[@name='selected[]'])[1]").click()
+
+    def click_edit_button_by_index(self, index):
+        wd = self.app.wd
+        # press edit button in row by index
+        wd.find_element(By.XPATH, f"//tr[@name='entry'][{index + 1}]/td[8]/a").click()
 
     def count(self):
         wd = self.app.wd

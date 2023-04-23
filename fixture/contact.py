@@ -1,3 +1,5 @@
+import time
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.alert import Alert
 
@@ -5,6 +7,8 @@ from model.contact import Contact
 
 
 class ContactHelper:
+
+    contacts_cache = None
 
     def __init__(self, app):
         self.app = app
@@ -69,19 +73,22 @@ class ContactHelper:
         # submit
         wd.find_element(By.XPATH, "//input[@name='submit'][2]").click()
         self.return_to_home_page()
+        self.contacts_cache = None
 
     def delete_first(self):
         wd = self.app.wd
+
         self.click_home_menu()
         self.select_first_contact()
         # press delete button
         wd.find_element(By.XPATH, "//input[@value='Delete']").click()
         # press OK in alert window
+        time.sleep(1)
         wd.switch_to.alert.accept()
+        time.sleep(1)
         self.click_home_menu()
-        # обновляем страницу, чтобы удаленные данные не присутствовали
-        wd.refresh()
 
+        self.contacts_cache = None
 
     def edit_first(self, contact):
         wd = self.app.wd
@@ -93,6 +100,7 @@ class ContactHelper:
         # press update button
         wd.find_element(By.XPATH, "//input[@value='Update']").click()
         self.return_to_home_page()
+        self.contacts_cache = None
 
     def select_first_contact(self):
         wd = self.app.wd
@@ -105,14 +113,15 @@ class ContactHelper:
         return len(wd.find_elements(By.XPATH, "//input[@name='selected[]']"))
 
     def get_contacts_list(self):
-        wd = self.app.wd
-        self.click_home_menu()
+        if self.contacts_cache is None:
+            wd = self.app.wd
+            self.click_home_menu()
 
-        contacts = []
-        for element in wd.find_elements(By.XPATH, "//tr[@name='entry']"):
-            firstname = element.find_elements(By.TAG_NAME, "td")[2].text
-            lastname = element.find_elements(By.TAG_NAME, "td")[1].text
-            id = element.find_element(By.NAME, "selected[]").get_attribute("value")
-            contacts.append(Contact(firstname=firstname, lastname=lastname, id=id))
+            self.contacts_cache = []
+            for element in wd.find_elements(By.XPATH, "//tr[@name='entry']"):
+                firstname = element.find_elements(By.TAG_NAME, "td")[2].text
+                lastname = element.find_elements(By.TAG_NAME, "td")[1].text
+                id = element.find_element(By.NAME, "selected[]").get_attribute("value")
+                self.contacts_cache.append(Contact(firstname=firstname, lastname=lastname, id=id))
 
-        return contacts
+        return self.contacts_cache

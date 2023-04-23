@@ -5,6 +5,9 @@ from model.group import Group
 
 class GroupHelper:
 
+    # кеширование списка групп
+    groups_cache = None
+
     def __init__(self, app):
         self.app = app
 
@@ -34,6 +37,7 @@ class GroupHelper:
         # submit form
         wd.find_element(By.NAME, "submit").click()
         self.return_to_groups_page()
+        self.groups_cache = None
 
     def return_to_groups_page(self):
         wd = self.app.wd
@@ -46,6 +50,7 @@ class GroupHelper:
         # press delete button
         wd.find_element(By.XPATH, "//input[@name='delete']").click()
         self.return_to_groups_page()
+        self.groups_cache = None
 
     def edit_first(self, group):
         wd = self.app.wd
@@ -57,6 +62,7 @@ class GroupHelper:
         # press update button
         wd.find_element(By.XPATH, "//input[@name='update']").click()
         self.return_to_groups_page()
+        self.groups_cache = None
 
     def select_first_group(self):
         wd = self.app.wd
@@ -69,14 +75,15 @@ class GroupHelper:
         return len(wd.find_elements(By.XPATH, "//input[@name='selected[]']"))
 
     def get_groups_list(self):
-        wd = self.app.wd
-        self.open_groups_menu()
+        if self.groups_cache is None:
+            wd = self.app.wd
+            self.open_groups_menu()
 
-        groups = []
-        for element in wd.find_elements(By.XPATH, "//span[@class='group']"):
-            name = element.text
-            # ищем вложенный элемент input по имени, получаем id из атрибута value
-            id = element.find_element(By.NAME, "selected[]").get_attribute("value")
-            groups.append(Group(name=name, id=id))
+            self.groups_cache = []
+            for element in wd.find_elements(By.XPATH, "//span[@class='group']"):
+                name = element.text
+                # ищем вложенный элемент input по имени, получаем id из атрибута value
+                id = element.find_element(By.NAME, "selected[]").get_attribute("value")
+                self.groups_cache.append(Group(name=name, id=id))
 
-        return groups
+        return self.groups_cache

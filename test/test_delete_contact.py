@@ -14,6 +14,6 @@ def test_delete_random_contact(app):
     assert app.contact.count() == len(old_contacts) - 1
 
     new_contacts = app.contact.get_contacts_list()
-    # удаляем первый элемент изначального списка и сравниваем списки
+    # remove first element of the original list and compare lists
     old_contacts[index:index+1] = []
     assert new_contacts == old_contacts

@@ -8,15 +8,15 @@ class Group:
         self.footer = footer
         self.id = id
 
-    # функция для строкового представления объекта Group
+    # method for string representation for Group object
     def __repr__(self):
         return f"{self.id}: {self.name}"
 
-    # функция для сравнения объектов Group. Если id = None, то не сравниваем id.
+    # method for comparing Group objects. If id = None, then we don't compare id.
     def __eq__(self, other):
         return (self.id == other.id or self.id is None or other.id is None) and self.name == other.name
 
-    # функция для сортировки списков, возвращает либо id, либо очень большой идентификатор
+    # method for sort lists, return either id, either very big identifier
     def id_or_max(self):
         if self.id:
             return int(self.id)

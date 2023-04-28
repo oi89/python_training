@@ -5,7 +5,7 @@ from model.group import Group
 
 class GroupHelper:
 
-    # кеширование списка групп
+    # caching groups list
     groups_cache = None
 
     def __init__(self, app):
@@ -93,7 +93,7 @@ class GroupHelper:
             self.groups_cache = []
             for element in wd.find_elements(By.XPATH, "//span[@class='group']"):
                 name = element.text
-                # ищем вложенный элемент input по имени, получаем id из атрибута value
+                # searching an inner input element by name, getting id from the attribute value
                 id = element.find_element(By.NAME, "selected[]").get_attribute("value")
                 self.groups_cache.append(Group(name=name, id=id))
 

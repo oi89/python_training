@@ -14,6 +14,6 @@ def test_delete_some_random_group(app):
     assert app.group.count() == len(old_groups) - 1
 
     new_groups = app.group.get_groups_list()
-    # удаляем первый элемент изначального списка и сравниваем списки
+    # remove first element of the original list and compare lists
     old_groups[index:index+1] = []
     assert new_groups == old_groups

@@ -45,7 +45,7 @@ class Contact:
             and (self.firstname == other.firstname or self.firstname is None or other.firstname is None) \
             and (self.lastname == other.lastname or self.lastname is None or other.lastname is None)
 
-    # функция для сортировки списков, возвращает либо id, либо очень большой идентификатор
+    # method for sort lists, return either id, either very big identifier
     def id_or_max(self):
         if self.id:
             return int(self.id)

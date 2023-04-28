@@ -31,9 +31,13 @@ class SessionHelper:
         return len(wd.find_elements(By.XPATH, "//form[@name='logout']//a")) > 0
 
     def is_logged_in_as(self, username):
-        wd = self.app.wd
         # check if there are correct username in the top of the page
-        return wd.find_element(By.XPATH, "//form[@name='logout']/b").text == "(" + username + ")"
+        return self.get_logged_username() == username
+
+    def get_logged_username(self):
+        wd = self.app.wd
+        # removing brackets (first and last symbols) to get just a user's name
+        return wd.find_element(By.XPATH, "//form[@name='logout']/b").text[1:-1]
 
     def logout(self):
         wd = self.app.wd

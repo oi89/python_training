@@ -1,3 +1,4 @@
+import re
 import time
 
 from selenium.webdriver.common.by import By
@@ -117,6 +118,11 @@ class ContactHelper:
         # select first contact's checkbox
         wd.find_element(By.XPATH, "(//input[@name='selected[]'])[1]").click()
 
+    def click_view_button_by_index(self, index):
+        wd = self.app.wd
+        # press view button in row by index
+        wd.find_element(By.XPATH, f"//tr[@name='entry'][{index + 1}]/td[7]/a").click()
+
     def click_edit_button_by_index(self, index):
         wd = self.app.wd
         # press edit button in row by index
@@ -137,6 +143,43 @@ class ContactHelper:
                 firstname = element.find_elements(By.TAG_NAME, "td")[2].text
                 lastname = element.find_elements(By.TAG_NAME, "td")[1].text
                 id = element.find_element(By.NAME, "selected[]").get_attribute("value")
-                self.contacts_cache.append(Contact(firstname=firstname, lastname=lastname, id=id))
+                all_phones = element.find_elements(By.TAG_NAME, "td")[5].text.splitlines()
+
+                self.contacts_cache.append(Contact(firstname=firstname, lastname=lastname, id=id,
+                                                   home=all_phones[0], mobile=all_phones[1],
+                                                   work=all_phones[2], phone2=all_phones[3]))
 
         return self.contacts_cache
+
+    def get_contact_info_from_edit_page(self, index):
+        wd = self.app.wd
+        self.click_home_menu()
+        self.click_edit_button_by_index(index)
+
+        id = wd.find_element(By.NAME, "id").get_attribute("value")
+        firstname = wd.find_element(By.NAME, "firstname").get_attribute("value")
+        lastname = wd.find_element(By.NAME, "lastname").get_attribute("value")
+        home_phone = wd.find_element(By.NAME, "home").get_attribute("value")
+        mobile_phone = wd.find_element(By.NAME, "mobile").get_attribute("value")
+        work_phone = wd.find_element(By.NAME, "work").get_attribute("value")
+        secondary_phone = wd.find_element(By.NAME, "phone2").get_attribute("value")
+
+        return Contact(id=id, firstname=firstname, lastname=lastname,
+                       home=home_phone, mobile=mobile_phone,
+                       work=work_phone, phone2=secondary_phone)
+
+    def get_contact_from_view_page(self, index):
+        wd = self.app.wd
+        self.click_home_menu()
+        self.click_view_button_by_index(index)
+
+        text = wd.find_element(By.ID, "content").text
+        # search by regexp
+        # .* - any symbol repeated any times,
+        # (.*) - group; when we call group(1) it returns content of this group - phone number
+        home_phone = re.search("H: (.*)", text).group(1)
+        mobile_phone = re.search("M: (.*)", text).group(1)
+        work_phone = re.search("W: (.*)", text).group(1)
+        secondary_phone = re.search("P: (.*)", text).group(1)
+
+        return Contact(home=home_phone, mobile=mobile_phone, work=work_phone, phone2=secondary_phone)

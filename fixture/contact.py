@@ -142,9 +142,12 @@ class ContactHelper:
                 firstname = element.find_elements(By.TAG_NAME, "td")[2].text
                 lastname = element.find_elements(By.TAG_NAME, "td")[1].text
                 id = element.find_element(By.NAME, "selected[]").get_attribute("value")
+                address = element.find_elements(By.TAG_NAME, "td")[3].text
+                all_emails = element.find_elements(By.TAG_NAME, "td")[4].text
                 all_phones = element.find_elements(By.TAG_NAME, "td")[5].text
 
                 self.contacts_cache.append(Contact(firstname=firstname, lastname=lastname, id=id,
+                                                   address=address, all_emails_from_home_page = all_emails,
                                                    all_phones_from_home_page=all_phones))
 
         return self.contacts_cache
@@ -157,12 +160,18 @@ class ContactHelper:
         id = wd.find_element(By.NAME, "id").get_attribute("value")
         firstname = wd.find_element(By.NAME, "firstname").get_attribute("value")
         lastname = wd.find_element(By.NAME, "lastname").get_attribute("value")
+        address = wd.find_element(By.NAME, "address").text
+        email = wd.find_element(By.NAME, "email").get_attribute("value")
+        email2 = wd.find_element(By.NAME, "email2").get_attribute("value")
+        email3 = wd.find_element(By.NAME, "email3").get_attribute("value")
         home_phone = wd.find_element(By.NAME, "home").get_attribute("value")
         mobile_phone = wd.find_element(By.NAME, "mobile").get_attribute("value")
         work_phone = wd.find_element(By.NAME, "work").get_attribute("value")
         secondary_phone = wd.find_element(By.NAME, "phone2").get_attribute("value")
 
         return Contact(id=id, firstname=firstname, lastname=lastname,
+                       address=address,
+                       email=email, email2=email2, email3=email3,
                        home=home_phone, mobile=mobile_phone,
                        work=work_phone, phone2=secondary_phone)
 

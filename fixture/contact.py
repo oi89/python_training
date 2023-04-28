@@ -8,7 +8,6 @@ from model.contact import Contact
 
 
 class ContactHelper:
-
     contacts_cache = None
 
     def __init__(self, app):
@@ -16,7 +15,7 @@ class ContactHelper:
 
     def click_home_menu(self):
         wd = self.app.wd
-        if not(wd.current_url.endswith("/addressbook/") and len(wd.find_elements(By.NAME, "searchstring")) > 0):
+        if not (wd.current_url.endswith("/addressbook/") and len(wd.find_elements(By.NAME, "searchstring")) > 0):
             wd.find_element(By.LINK_TEXT, "home").click()
 
     def click_add_new_menu(self):
@@ -143,11 +142,10 @@ class ContactHelper:
                 firstname = element.find_elements(By.TAG_NAME, "td")[2].text
                 lastname = element.find_elements(By.TAG_NAME, "td")[1].text
                 id = element.find_element(By.NAME, "selected[]").get_attribute("value")
-                all_phones = element.find_elements(By.TAG_NAME, "td")[5].text.splitlines()
+                all_phones = element.find_elements(By.TAG_NAME, "td")[5].text
 
                 self.contacts_cache.append(Contact(firstname=firstname, lastname=lastname, id=id,
-                                                   home=all_phones[0], mobile=all_phones[1],
-                                                   work=all_phones[2], phone2=all_phones[3]))
+                                                   all_phones_from_home_page=all_phones))
 
         return self.contacts_cache
 

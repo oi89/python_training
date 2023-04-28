@@ -5,10 +5,7 @@ def test_phones_on_home_page(app):
     contact_from_home_page = app.contact.get_contacts_list()[0]
     contact_from_edit_page = app.contact.get_contact_info_from_edit_page(0)
 
-    assert contact_from_home_page.home == clear(contact_from_edit_page.home)
-    assert contact_from_home_page.mobile == clear(contact_from_edit_page.mobile)
-    assert contact_from_home_page.work == clear(contact_from_edit_page.work)
-    assert contact_from_home_page.phone2 == clear(contact_from_edit_page.phone2)
+    assert contact_from_home_page.all_phones_from_home_page == merge_phones_like_on_home_page(contact_from_edit_page)
 
 
 def test_phones_on_view_page(app):
@@ -24,3 +21,14 @@ def test_phones_on_view_page(app):
 def clear(str):
     # remove symbols: "(", ")", " ", "-" from phones on edit page
     return re.sub("[() -]", "", str)
+
+
+def merge_phones_like_on_home_page(contact):
+    return "\n".join(filter(lambda phone: phone != '',  # remove empty elements if phone is not set
+                            map(lambda phone: clear(phone),  # remove extra symbols from the phone
+                                filter(lambda phone: phone is not None,  # clear method won't work for None elements
+                                       [contact.home, contact.mobile, contact.work, contact.phone2]
+                                       )
+                                )
+                            )
+                     )

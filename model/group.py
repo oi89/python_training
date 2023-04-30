@@ -10,7 +10,7 @@ class Group:
 
     # method for string representation for Group object
     def __repr__(self):
-        return f"{self.id}: {self.name}"
+        return f"{self.id}:{self.name}:{self.header}:{self.footer}"
 
     # method for comparing Group objects. If id = None, then we don't compare id.
     def __eq__(self, other):

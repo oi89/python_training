@@ -1,5 +1,6 @@
 import pytest
 import json
+import os.path
 
 from fixture.application import Application
 
@@ -14,7 +15,9 @@ def app(request):
 
     browser = request.config.getoption("--browser")
     if target is None:
-        with open(request.config.getoption("--target")) as config_file:
+        # get directory's name of current file "conftest.py" and combine it with name of config file
+        file = os.path.join(os.path.dirname(os.path.abspath(__file__)), request.config.getoption("--target"))
+        with open(file) as config_file:
             target = json.load(config_file)
 
     if fixture is None or not fixture.is_valid():

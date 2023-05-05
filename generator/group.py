@@ -31,7 +31,7 @@ for o, a in opts:
 def random_string(prefix, maxlen):
     # connect letters, numbers, punctuation symbols and space
     # to get more spaces in result string, multiply " " to 10 times
-    symbols = string.ascii_letters + string.digits + string.punctuation + " " * 10
+    symbols = string.ascii_letters + string.digits + " " * 10
     return prefix + ''.join([random.choice(symbols) for i in range(random.randrange(maxlen))])
 
 

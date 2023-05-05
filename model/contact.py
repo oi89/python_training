@@ -44,10 +44,11 @@ class Contact:
     def __repr__(self):
         return f"{self.id}: {self.firstname} {self.lastname}"
 
+    # trim spaces, because they can cause issues with assertions
     def __eq__(self, other):
         return (self.id == other.id or self.id is None or other.id is None) \
-            and (self.firstname == other.firstname or self.firstname is None or other.firstname is None) \
-            and (self.lastname == other.lastname or self.lastname is None or other.lastname is None)
+            and (self.firstname.strip() == other.firstname.strip() or self.firstname is None or other.firstname is None) \
+            and (self.lastname.strip() == other.lastname.strip() or self.lastname is None or other.lastname is None)
 
     # method for sort lists, return either id, either very big identifier
     def id_or_max(self):

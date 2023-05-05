@@ -1,9 +1,9 @@
 from model.group import Group
 
 
-# parameter data_groups means that we will get test data from data.group module
-def test_add_group(app, data_groups):
-    group = data_groups
+# parameter json_groups means that we will get test data from file data.groups.json
+def test_add_group(app, json_groups):
+    group = json_groups
     old_groups = app.group.get_groups_list()
     app.group.create(group)
 

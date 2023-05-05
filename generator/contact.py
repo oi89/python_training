@@ -1,7 +1,7 @@
 import random
 import string
 import os.path
-import json
+import jsonpickle
 import getopt
 import sys
 
@@ -76,7 +76,7 @@ test_data = [
 file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../", f)
 # open file in write mode
 with open(file, "w") as output:
-    # json.dumps() converts object to json string
-    # default - function for transform Contact object to dictionary
     # indent - offset in json structure
-    output.write(json.dumps(test_data, default=lambda x: x.__dict__, indent=2))
+    jsonpickle.set_encoder_options("json", indent=2)
+    # jsonpickle.encode() converts object to json string
+    output.write(jsonpickle.encode(test_data))

@@ -1,6 +1,7 @@
 import pytest
 import json
 import os.path
+import importlib
 
 from fixture.application import Application
 
@@ -38,7 +39,24 @@ def stop(request):
     return fixture
 
 
+# pytest hook for add parameter to launch tests
 def pytest_addoption(parser):
     parser.addoption("--browser", action="store", default="firefox")
     # config file
     parser.addoption("--target", action="store", default="target.json")
+
+
+# pytest hook for parametrization (called when collect a test method)
+def pytest_generate_tests(metafunc):
+    # go through all parameters of test method
+    for param in metafunc.fixturenames:
+        if param.startswith("data_"):
+            # load test data from module removing "test_" (for example, "test_groups" -> "groups")
+            test_data = load_from_module(param[5:])
+            # add parametrization to test method
+            metafunc.parametrize(param, test_data, ids=[str(x) for x in test_data])
+
+
+def load_from_module(module):
+    # import module by name from data package and return test_data variable
+    return importlib.import_module(f"data.{module}").test_data

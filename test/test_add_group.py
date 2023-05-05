@@ -1,13 +1,9 @@
-# -*- coding: utf-8 -*-
-import pytest
-
 from model.group import Group
-# we can change what to import - constants or random values
-from data.add_group import constant as test_data
 
 
-@pytest.mark.parametrize("group", test_data, ids=[repr(x) for x in test_data])
-def test_add_group(app, group):
+# parameter data_groups means that we will get test data from data.group module
+def test_add_group(app, data_groups):
+    group = data_groups
     old_groups = app.group.get_groups_list()
     app.group.create(group)
 

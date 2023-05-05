@@ -17,7 +17,7 @@ except getopt.GetoptError as err:
 
 # default values
 n = 5
-f = "/data/groups.json"
+f = "../data/groups.json"
 
 for o, a in opts:
     # if name of option is n, then convert it value to int and save to n
@@ -42,7 +42,7 @@ test_data = [Group(name="", header="", footer="")] + [
 ]
 
 # combine directory name with ../ and filename from options
-file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", f)
+file = os.path.join(os.path.dirname(os.path.abspath(__file__)), f)
 # open file in write mode
 with open(file, "w") as output:
     # json.dumps() converts object to json string

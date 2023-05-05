@@ -1,22 +1,9 @@
 # -*- coding: utf-8 -*-
-from model.group import Group
 import pytest
-import random
-import string
 
-
-def random_string(prefix, maxlen):
-    # connect letters, numbers, punctuation symbols and space
-    # to get more spaces in result string, multiply " " to 10 times
-    symbols = string.ascii_letters + string.digits + string.punctuation + " "*10
-    return prefix + ''.join([random.choice(symbols) for i in range(random.randrange(maxlen))])
-
-
-# create 1 empty group and 5 groups with random names
-test_data = [Group(name="", header="", footer="")] + [
-    Group(name=random_string("group_", 10), header=random_string("header_", 20), footer=random_string("footer_", 20))
-    for i in range(5)
-]
+from model.group import Group
+# we can change what to import - constants or random values
+from data.add_group import constant as test_data
 
 
 @pytest.mark.parametrize("group", test_data, ids=[repr(x) for x in test_data])

@@ -51,6 +51,12 @@ def db(request):
     return db_fixture
 
 
+@pytest.fixture
+def check_ui(request):
+    # return True if parameter exists or False
+    return request.config.getoption("--check_ui")
+
+
 @pytest.fixture(scope="session", autouse=True)
 def stop(request):
     def fin():
@@ -66,6 +72,8 @@ def pytest_addoption(parser):
     parser.addoption("--browser", action="store", default="firefox")
     # config file
     parser.addoption("--target", action="store", default="target.json")
+    # store_true - value of option will be True if it exists, False if it doesn't exist
+    parser.addoption("--check_ui", action="store_true")
 
 
 # pytest hook for parametrization (called when collect a test method)

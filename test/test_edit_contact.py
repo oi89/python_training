@@ -1,35 +1,53 @@
-from random import randrange
+import random
 
 from model.contact import Contact
 
 
-def test_edit_random_contact_firstname(app):
-    contact = Contact(firstname='firstname1-edit')
+def test_edit_random_contact_firstname(app, db, check_ui):
+    new_contact = Contact(firstname='firstname1-edit')
 
-    if app.contact.count() == 0:
+    if len(db.get_contacts_list()) == 0:
         app.contact.create(Contact(firstname='contact for edit'))
 
-    old_contacts = app.contact.get_contacts_list()
-    index = randrange(len(old_contacts))
-    app.contact.edit_contact_by_index(index, contact)
+    old_contacts = db.get_contacts_list()
+    contact_to_edit = random.choice(old_contacts)
+    app.contact.edit_contact_by_id(contact_to_edit.id, new_contact)
 
     assert app.contact.count() == len(old_contacts)
 
-    contact.id = old_contacts[index].id
-    old_contacts[index] = contact
-    new_contacts = app.contact.get_contacts_list()
+    # change contact_to_edit to new_contact in old_contacts list for compare
+    for contact in old_contacts:
+        if contact == contact_to_edit:
+            contact.firstname = new_contact.firstname
+
+    new_contacts = db.get_contacts_list()
 
     assert sorted(new_contacts, key=Contact.id_or_max) == sorted(old_contacts, key=Contact.id_or_max)
 
+    if check_ui:
+        sorted(new_contacts, key=Contact.id_or_max) == sorted(app.contact.get_contacts_list(), key=Contact.id_or_max)
 
-def test_edit_first_contact_birthday(app):
-    contact = Contact(bday='6', bmonth='February', byear='1981')
 
-    if app.contact.count() == 0:
-        app.contact.create(Contact(firstname='contact for edit'))
+def test_edit_random_contact_lastname(app, db, check_ui):
+    new_contact = Contact(lastname='lastname1-edit')
 
-    old_contacts = app.contact.get_contacts_list()
-    app.contact.edit_first(contact)
-    new_contacts = app.contact.get_contacts_list()
+    if len(db.get_contacts_list()) == 0:
+        app.contact.create(Contact(lastname='contact for edit'))
 
-    assert len(new_contacts) == len(old_contacts)
+    old_contacts = db.get_contacts_list()
+    contact_to_edit = random.choice(old_contacts)
+    app.contact.edit_contact_by_id(contact_to_edit.id, new_contact)
+
+    assert app.contact.count() == len(old_contacts)
+
+    # change contact_to_edit to new_contact in old_contacts list for compare
+    for contact in old_contacts:
+        if contact == contact_to_edit:
+            contact.lastname = new_contact.lastname
+
+    new_contacts = db.get_contacts_list()
+
+    assert sorted(new_contacts, key=Contact.id_or_max) == sorted(old_contacts, key=Contact.id_or_max)
+
+    if check_ui:
+        sorted(new_contacts, key=Contact.id_or_max) == sorted(app.contact.get_contacts_list(), key=Contact.id_or_max)

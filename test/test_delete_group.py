@@ -16,6 +16,7 @@ def test_delete_some_random_group(app, db, check_ui):
     new_groups = db.get_groups_list()
     # remove element of the original list and compare lists
     old_groups.remove(group)
+
     assert new_groups == old_groups
 
     if check_ui:

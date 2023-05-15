@@ -119,6 +119,17 @@ class ContactHelper:
         self.return_to_home_page()
         self.contacts_cache = None
 
+    def edit_contact_by_id(self, contact_id, contact):
+        wd = self.app.wd
+        self.click_home_menu()
+        self.select_contact_by_id(contact_id)
+        self.click_edit_button_by_id(contact_id)
+        self.fill_contact_form(contact)
+        # press update button
+        wd.find_element(By.XPATH, "//input[@value='Update']").click()
+        self.return_to_home_page()
+        self.contacts_cache = None
+
     def edit_first(self, contact):
         self.edit_contact_by_index(0, contact)
 
@@ -146,6 +157,12 @@ class ContactHelper:
         wd = self.app.wd
         # press edit button in row by index
         wd.find_element(By.XPATH, f"//tr[@name='entry'][{index + 1}]/td[8]/a").click()
+
+    def click_edit_button_by_id(self, contact_id):
+        wd = self.app.wd
+        # press edit button in row by index
+        wd.find_element(By.XPATH, f"//input[@id='{contact_id}']/ancestor::tr/td[8]/a").click()
+        # row.find_element(By.XPATH, "/td[8]/a").click()
 
     def count(self):
         wd = self.app.wd

@@ -90,6 +90,21 @@ class ContactHelper:
 
         self.contacts_cache = None
 
+    def delete_contact_by_id(self, contact_id):
+        wd = self.app.wd
+
+        self.click_home_menu()
+        self.select_contact_by_id(contact_id)
+        # press delete button
+        wd.find_element(By.XPATH, "//input[@value='Delete']").click()
+        # press OK in alert window
+        time.sleep(1)
+        wd.switch_to.alert.accept()
+        time.sleep(1)
+        self.click_home_menu()
+
+        self.contacts_cache = None
+
     def delete_first(self):
         self.delete_contact_by_index(0)
 
@@ -111,6 +126,11 @@ class ContactHelper:
         wd = self.app.wd
         # select contact's checkbox by index
         wd.find_elements(By.XPATH, "//input[@name='selected[]']")[index].click()
+
+    def select_contact_by_id(self, contact_id):
+        wd = self.app.wd
+        # select contact's checkbox by contact id
+        wd.find_element(By.XPATH, f"//input[@id='{contact_id}']").click()
 
     def select_first_contact(self):
         wd = self.app.wd

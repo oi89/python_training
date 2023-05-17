@@ -1,18 +1,27 @@
 import re
 from random import randrange
 
+from model.contact import Contact
 
-def test_phones_on_home_page(app):
-    contacts_on_home_page = app.contact.get_contacts_list()
-    index = randrange(len(contacts_on_home_page))
-    contact_from_home_page = contacts_on_home_page[index]
-    contact_from_edit_page = app.contact.get_contact_info_from_edit_page(index)
 
-    assert contact_from_home_page.firstname == contact_from_edit_page.firstname
-    assert contact_from_home_page.lastname == contact_from_edit_page.lastname
-    assert contact_from_home_page.address == contact_from_edit_page.address
-    assert contact_from_home_page.all_emails_from_home_page == merge_emails_like_on_home_page(contact_from_edit_page)
-    assert contact_from_home_page.all_phones_from_home_page == merge_phones_like_on_home_page(contact_from_edit_page)
+def test_contacts_on_home_page(app, db):
+    contacts_on_home_page = sorted(app.contact.get_contacts_list(), key=Contact.id_or_max)
+
+    def clear_spaces(contact):
+        return Contact(id=contact.id, firstname=contact.firstname.strip(), lastname=contact.lastname.strip(),
+                       address=contact.address,
+                       email=contact.email.strip(), email2=contact.email2.strip(), email3=contact.email3.strip(),
+                       mobile=contact.mobile, work=contact.work, home=contact.home, phone2=contact.phone2)
+
+    contacts_from_db = list(map(clear_spaces, db.get_contacts_list()))
+    contacts_from_db = sorted(contacts_from_db, key=Contact.id_or_max)
+
+    for i in range(0, len(contacts_on_home_page)):
+        assert contacts_on_home_page[i].firstname == contacts_from_db[i].firstname
+        assert contacts_on_home_page[i].lastname == contacts_from_db[i].lastname
+        assert contacts_on_home_page[i].address == contacts_from_db[i].address
+        assert contacts_on_home_page[i].all_emails_from_home_page == merge_emails_like_on_home_page(contacts_from_db[i])
+        assert contacts_on_home_page[i].all_phones_from_home_page == merge_phones_like_on_home_page(contacts_from_db[i])
 
 
 def test_phones_on_view_page(app):
@@ -26,6 +35,9 @@ def test_phones_on_view_page(app):
 
 
 def clear(str):
+    # change "00" to "+"
+    if str.startswith("00"):
+        str = str.replace("00", "+", 1)
     # remove symbols: "(", ")", " ", "-" from phones on edit page
     return re.sub("[() -]", "", str)
 

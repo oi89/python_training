@@ -18,6 +18,11 @@ class ContactHelper:
         if not (wd.current_url.endswith("/addressbook/") and len(wd.find_elements(By.NAME, "searchstring")) > 0):
             wd.find_element(By.LINK_TEXT, "home").click()
 
+    def click_logo_link(self):
+        wd = self.app.wd
+        if not (wd.current_url.endswith("/addressbook/") and len(wd.find_elements(By.NAME, "searchstring")) > 0):
+            wd.find_element(By.XPATH, "//div[@id='header']/a").click()
+
     def click_add_new_menu(self):
         wd = self.app.wd
         wd.find_element(By.LINK_TEXT, "add new").click()
@@ -227,3 +232,38 @@ class ContactHelper:
         secondary_phone = re.search("P: (.*)", text).group(1)
 
         return Contact(home=home_phone, mobile=mobile_phone, work=work_phone, phone2=secondary_phone)
+
+    def select_group_from_add_list_by_id(self, group_id):
+        wd = self.app.wd
+        wd.find_element(By.NAME, "to_group").click()
+        wd.find_element(By.XPATH, f"//select[@name='to_group']/option[@value='{group_id}']").click()
+
+    def click_add_to_group_button(self):
+        wd = self.app.wd
+        wd.find_element(By.NAME, "add").click()
+
+    def go_to_group_page(self):
+        wd = self.app.wd
+        wd.find_element(By.XPATH, "//div[@class='msgbox']//a").click()
+
+    def add_contact_to_group(self, contact, group):
+        self.click_logo_link()
+        self.select_contact_by_id(contact.id)
+        self.select_group_from_add_list_by_id(group.id)
+        self.click_add_to_group_button()
+        self.go_to_group_page()
+
+    def select_group_from_view_list(self, group):
+        wd = self.app.wd
+        wd.find_element(By.XPATH, "//select[@name='group']").click()
+        wd.find_element(By.XPATH, f"//select[@name='group']/option[@value='{group.id}']").click()
+
+    def click_remove_from_group_button(self):
+        wd = self.app.wd
+        wd.find_element(By.NAME, "remove").click()
+
+    def remove_contact_from_group(self, contact, group):
+        self.select_group_from_view_list(group)
+        self.select_contact_by_id(contact.id)
+        self.click_remove_from_group_button()
+        self.go_to_group_page()

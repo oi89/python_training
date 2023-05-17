@@ -1,5 +1,6 @@
 import pymysql.cursors
 
+from fixture.orm import ORMFixture
 from model.group import Group
 from model.contact import Contact
 
@@ -10,6 +11,7 @@ class DbFixture:
         self.name = name
         self.user = user
         self.password = password
+        self.orm = ORMFixture(host=host, name=name, user=user, password=password)
         self.connection = pymysql.connect(host=host, database=name, user=user, password=password, autocommit=True)
 
     def get_groups_list(self):

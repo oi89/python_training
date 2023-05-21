@@ -29,8 +29,8 @@ def test_add_contact_to_group(app, db):
         contact = random.choice(db.orm.get_contacts_not_in_group(group=group))
 
     app.contact.add_contact_to_group(contact, group)
-
-    contacts_in_group = app.contact.get_contacts_list()
     app.contact.click_logo_link()
 
-    assert (contact in contacts_in_group)
+    contacts_in_group_new = db.orm.get_contacts_in_group(group=group)
+
+    assert contact in contacts_in_group_new

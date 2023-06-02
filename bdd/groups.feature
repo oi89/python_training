@@ -9,6 +9,7 @@ Scenario Outline: Add new group
   | name1 | header1 | footer1 |
   | name2 | header2 | footer2 |
 
+
  Scenario: Delete random group
   Given non-empty group list
   Given random group from the list

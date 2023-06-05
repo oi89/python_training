@@ -47,8 +47,8 @@ class Contact:
     # trim spaces, because they can cause issues with assertions
     def __eq__(self, other):
         return (self.id == other.id or self.id is None or other.id is None) \
-            and (self.firstname.strip() == other.firstname.strip() or self.firstname is None or other.firstname is None) \
-            and (self.lastname.strip() == other.lastname.strip() or self.lastname is None or other.lastname is None)
+            and (self.firstname is None or other.firstname is None or self.firstname.strip() == other.firstname.strip()) \
+            and (self.lastname is None or other.lastname is None or self.lastname.strip() == other.lastname.strip())
 
     # method for sort lists, return either id, either very big identifier
     def id_or_max(self):

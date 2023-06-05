@@ -1,3 +1,5 @@
+import allure
+
 from model.contact import Contact
 
 
@@ -5,13 +7,17 @@ from model.contact import Contact
 def test_add_contact(app, db, json_contacts, check_ui):
     contact = json_contacts
 
-    old_contacts = db.get_contacts_list()
-    app.contact.create(contact)
+    with allure.step("Given a contacts list"):
+        old_contacts = db.get_contacts_list()
 
-    new_contacts = db.get_contacts_list()
-    old_contacts.append(contact)
+    with allure.step(f"When add the contact {contact}"):
+        app.contact.create(contact)
 
-    assert sorted(new_contacts, key=Contact.id_or_max) == sorted(old_contacts, key=Contact.id_or_max)
+    with allure.step("Then new contacts list is equal to old contacts list with added contact"):
+        new_contacts = db.get_contacts_list()
+        old_contacts.append(contact)
 
-    if check_ui:
-        assert sorted(new_contacts, key=Contact.id_or_max) == sorted(app.contact.get_contacts_list(), key=Contact.id_or_max)
+        assert sorted(new_contacts, key=Contact.id_or_max) == sorted(old_contacts, key=Contact.id_or_max)
+
+        if check_ui:
+            assert sorted(new_contacts, key=Contact.id_or_max) == sorted(app.contact.get_contacts_list(), key=Contact.id_or_max)

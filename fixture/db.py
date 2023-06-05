@@ -47,5 +47,15 @@ class DbFixture:
 
         return contacts
 
+    # delete all rows from table `address_in_groups` with deleted contacts
+    def delete_outdated_contacts_in_group(self):
+        cursor = self.connection.cursor()
+        try:
+            query = """DELETE FROM `address_in_groups` 
+            WHERE `id` NOT IN ( SELECT `id` FROM `addressbook` )"""
+            cursor.execute(query)
+        finally:
+            cursor.close()
+
     def destroy(self):
         self.connection.close()

@@ -263,6 +263,7 @@ class ContactHelper:
         wd.find_element(By.NAME, "remove").click()
 
     def remove_contact_from_group(self, contact, group):
+        self.click_logo_link()
         self.select_group_from_view_list(group)
         self.select_contact_by_id(contact.id)
         self.click_remove_from_group_button()

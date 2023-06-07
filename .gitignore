@@ -131,3 +131,8 @@ dmypy.json
 # Allure
 allure-results/
 allure-report/
+
+# Robot Framework
+report.html
+log.html
+output.xml

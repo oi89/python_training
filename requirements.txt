@@ -5,3 +5,4 @@ jsonpickle
 pony
 pymysql
 allure-pytest
+robotframework-python3

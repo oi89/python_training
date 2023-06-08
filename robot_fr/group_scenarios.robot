@@ -14,7 +14,7 @@ Add New Group
     Groups List Should Be Equal    ${new_list}    ${old_list}
 
 Delete Group
-    ${old_list} =    Get Group List
+    ${old_list} =    get non empty group list
     ${len} =    get length    ${old_list}
     ${index} =    evaluate    random.randrange(${len})    modules=random
     ${group} =    Get From List  ${old_list}    ${index}
